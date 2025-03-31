@@ -19,41 +19,151 @@
     <!-- 观看说明内容 -->
     <div class="max-w-4xl mx-auto bg-white shadow-md rounded-lg p-6 mt-6">
         <h2 class="text-3xl font-bold text-center mb-4">观看说明</h2>
-        <p class="text-gray-700 leading-relaxed">
-            本站运营模式永久会员模式。
-        </p>
-         <p class="text-gray-700 leading-relaxed">
-            购买会员账号密码观看完整视频。
-        </p>
-        <p class="text-gray-700 leading-relaxed">
-            永久会员1.15美元=大概8.8元。
-        </p>
-        <p class="text-gray-700 leading-relaxed">
-           注意：打开网站首页后稍等一会加载影片可能需要一点时间，取决于您网络环境，网络好几秒钟就可以显示正常。
-           1.如果打开网站全部空白，请您切换网络，个别地区会有限制，个别地区运营商也会有限制。
-           2.如果打开网站首页显示 “网站名称”“视频分类”，等待几十秒还是不显示视频，请您切换网络，个别地区会有限制，个别地区运营商也会有限制。
-           3.如果您还是所在地打不开，请您使用虚拟网络如：VPN，机场，节点，加速器等。
-           4.由于个别国家与地区限制成人内容，请您谅解。
-        </p>
-      <p class="mt-4 text-gray-700 leading-relaxed">
-    本站提供一个免费视频，测试是否播放正常，请您点击播放，确定正常播放后，在进行购买“会员账号”，以免购买会员账号后您不能正常播放视频。
-          如不能正常播放，请参考上面“注意”事项进行操作。
-    <a href="https://api.ukubf.com/m3u8/?url=https://vip4.bbffsl.com/20250327/hH62bC3W/index.m3u8" target="_blank" class="text-blue-500 hover:underline">点击播放</a>
-      </p>
-        <p class="mt-4 text-gray-700 leading-relaxed">
-            我们的目标是让每一位用户都能享受到流畅、高质量的视频服务。如果您有任何问题或建议，欢迎随时联系我们。
-        </p>
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>常见问题</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        /* 页面整体布局 */
+        .container {
+            max-width: 900px;
+            margin: 40px auto;
+            background: #f5f5f5;
+            padding: 20px;
+            border-radius: 8px;
+        }
 
-      <p class="mt-4 text-gray-700 leading-relaxed">
-    购买会员账号：
-    <a href="https://www.idatariver.com/zh-cn/project/%E6%98%A5%E7%A7%8B%E5%BD%B1%E8%A7%86-1a19" target="_blank" class="text-blue-500 hover:underline">点击这里</a>
-      </p>
-        <!-- 联系方式 -->
-        <div class="mt-6">
-            <h3 class="text-xl font-semibold">联系我们</h3>
-            <p class="text-gray-600">📧 Email: HWGQ@mail2tor.com</p>
+        /* 导航栏 */
+        .nav {
+            display: flex;
+            border-bottom: 2px solid #ddd;
+        }
+
+        .nav a {
+            flex: 1;
+            text-align: center;
+            padding: 10px 0;
+            font-size: 18px;
+            color: #333;
+            text-decoration: none;
+            border-bottom: 3px solid transparent;
+        }
+
+        .nav a.active {
+            font-weight: bold;
+            color: black;
+            border-bottom: 3px solid red;
+        }
+
+        /* 文章列表 */
+        .content-box {
+            background: white;
+            padding: 20px;
+            border-radius: 6px;
+            box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .faq-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .faq-list li {
+            padding: 15px 0;
+            border-bottom: 1px solid #ddd;
+        }
+
+        .faq-list li a {
+            font-size: 18px;
+            color: #333;
+            text-decoration: none;
+        }
+
+        .faq-list li a:hover {
+            color: red;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <!-- 导航栏 -->
+        <div class="nav">
+           
+            <a href="faq.html" class="active">常见问题</a>
+        </div>
+
+        <!-- 文章列表 -->
+        <div class="content-box">
+            <ul class="faq-list">
+                <li><a href="faq/tg-language.html">有没有其他联系方式？</a></li>
+                <li><a href="faq/verify-code.html">展示10种常见的的假U</a></li>
+                <li><a href="faq/hbjys.html">货币交易所推荐</a></li>
+                <li><a href="faq/dtxmwt.html">地推项目问题</a></li>
+                <li><a href="faq/bianusdt.html">大陆币安交易所买USDT详细图文教程：入金与出金</a></li>
+                <li><a href="faq/okxusdt.html">OKX(欧易)注册与出入金</a></li>
+                <li><a href="faq/jdzdb.html">金点子担保平台是什么？</a></li>
+            </ul>
         </div>
     </div>
 
+</body>
+</html>
+
+
+
+
+      
+<script>
+document.getElementById("search-btn").addEventListener("click", async function() {
+    const query = document.getElementById("search-input").value.trim().toLowerCase();
+    if (!query) return;
+
+    try {
+        const response = await fetch("articles.json");
+        const data = await response.json();
+        let articles = [];
+
+        // 遍历所有分类，提取所有文章
+        for (const category in data) {
+            for (const subcategory in data[category]) {
+                articles = articles.concat(data[category][subcategory]); // 合并文章列表
+            }
+        }
+
+        // 搜索匹配的文章
+        const results = articles.filter(article =>
+            article.title.toLowerCase().includes(query)
+        );
+
+        displayResults(results);
+    } catch (error) {
+        console.error("搜索加载失败:", error);
+    }
+});
+
+function displayResults(results) {
+    const resultsDiv = document.getElementById("search-results");
+    resultsDiv.innerHTML = "";
+    
+    if (results.length === 0) {
+        resultsDiv.innerHTML = "<p>未找到匹配的文章。</p>";
+        return;
+    }
+
+    results.forEach(article => {
+        const item = document.createElement("div");
+        item.classList.add("search-result-item");
+        item.innerHTML = `<a href="article.html?file=${encodeURIComponent(article.file)}">${article.title}</a>`;
+        resultsDiv.appendChild(item);
+    });
+}
+
+</script>
+</body>
 </body>
 </html>
