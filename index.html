@@ -202,63 +202,86 @@ function getPermissionLabel(user) {
 
 
     
-    function generateCategories() {
-      const categoryContainer = document.getElementById('category-container');
-      categoryContainer.innerHTML = '';
-      const categories = ["全部", ...new Set(videos.map(v => v.type_name))];
-      categories.forEach(category => {
-        const btn = document.createElement('button');
-        btn.textContent = category;
-        btn.className = "category-btn px-3 py-1 bg-gray-300 rounded hover:bg-blue-500 hover:text-white";
-        btn.dataset.category = category;
-        btn.onclick = () => {
-          currentCategory = category === "全部" ? "all" : category;
-          currentPage = 1;
-          renderVideos();
-        };
-        categoryContainer.appendChild(btn);
-      });
-    }
+function generateCategories() {
+  const categoryContainer = document.getElementById('category-container');
+  categoryContainer.innerHTML = '';
+  const categories = ["全部", "免费视频", ...new Set(videos.map(v => v.type_name))];
+
+  categories.forEach(category => {
+    const btn = document.createElement('button');
+    btn.textContent = category;
+    btn.className = "category-btn px-3 py-1 bg-gray-300 rounded hover:bg-blue-500 hover:text-white";
+    btn.dataset.category = category;
+    btn.onclick = () => {
+      currentCategory = category === "全部" ? "all" : category;
+      currentPage = 1;
+      renderVideos();
+    };
+    categoryContainer.appendChild(btn);
+  });
+}
+
 
 function renderVideos() {
   const container = document.getElementById("video-container");
-  let filtered = currentCategory === "all" ? videos : videos.filter(v => v.type_name === currentCategory);
+  let filtered;
+
+  if (currentCategory === "all") {
+    filtered = videos;
+  } else if (currentCategory === "免费视频") {
+    filtered = videos.filter(v => v.free === true);
+  } else {
+    filtered = videos.filter(v => v.type_name === currentCategory);
+  }
+
   const start = (currentPage - 1) * videosPerPage;
   const end = start + videosPerPage;
   const pageVideos = filtered.slice(start, end);
   container.innerHTML = '';
+
   pageVideos.forEach(v => {
     const div = document.createElement("div");
     div.className = "bg-white p-2 shadow rounded hover:shadow-lg transition cursor-pointer";
-    div.innerHTML = `<img src="${v.vod_pic}" class="w-full rounded mb-2"/><div class="text-sm">${v.vod_name}</div>`;
-    
-    // 修改后的点击行为：打开解析接口新窗口
-div.onclick = () => {
-  if (!isLoggedIn) {
-    openLoginModal();
-    return;
-  }
+    div.innerHTML = `
+      <img src="${v.vod_pic}" class="w-full rounded mb-2"/>
+      <div class="text-sm font-semibold">${v.vod_name}</div>
+      ${v.free ? '<div class="text-xs text-green-600 mt-1">🎬 免费试看</div>' : ''}
+    `;
 
-  const user = users.find(u => u.username === currentUser);
-  if (!canPlay(user)) {
-    alert("您的账号播放权限已过期或已使用完");
-    return;
-  }
+    // 点击播放
+    div.onclick = () => {
+      if (v.free) {
+        const parsedUrl = `https://sljxsl.com/?url=${encodeURIComponent(v.vod_play_url)}`;
+        window.open(parsedUrl, '_blank');
+        return;
+      }
 
-  if (user.permission?.type === "once") {
-    localStorage.setItem(`user-${user.username}-used`, "true");
-  }
+      if (!isLoggedIn) {
+        openLoginModal();
+        return;
+      }
 
-  const parsedUrl = `https://sljxsl.com/?url=${encodeURIComponent(v.vod_play_url)}`;
-  window.open(parsedUrl, '_blank');
-};
+      const user = users.find(u => u.username === currentUser);
+      if (!canPlay(user)) {
+        alert("您的账号播放权限已过期或已使用完");
+        return;
+      }
 
+      if (user.permission?.type === "once") {
+        localStorage.setItem(`user-${user.username}-used`, "true");
+      }
+
+      const parsedUrl = `https://sljxsl.com/?url=${encodeURIComponent(v.vod_play_url)}`;
+      window.open(parsedUrl, '_blank');
+    };
 
     container.appendChild(div);
   });
+
   document.getElementById("currentPage").textContent = currentPage;
   document.getElementById("totalPage").textContent = Math.ceil(filtered.length / videosPerPage);
 }
+
 
 
 function openVideoModal(url) {
