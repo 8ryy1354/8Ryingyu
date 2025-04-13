@@ -140,17 +140,19 @@ function validateLogin(username, password) {
     }
 
 async function loadVideos() {
-  const url = "https://8ryy1354.github.io/8Ryingyu/videos.json";// ✅ 这是是加速 https://cdn.jsdelivr.net/gh/Christoph75351/xin2@main/videos.json
   try {
-    const res = await fetch(url);
-    const json = await res.json();
-    videos = json;  // ✅ 这里正确赋值给 videos
+    const [mainRes, freeRes] = await Promise.all([
+      fetch("https://8ryy1354.github.io/8Ryingyu/videos.json").then(r => r.json()),
+      fetch("https://8ryy1354.github.io/8Ryingyu/free_videos.json").then(r => r.json())
+    ]);
+    videos = [...mainRes, ...freeRes];
     generateCategories();
     renderVideos();
   } catch (e) {
-    console.warn("无法加载 JSON：" + url);
+    console.warn("无法加载 JSON 视频数据", e);
   }
 }
+
 
 function canPlay(user) {
   const type = user.permission?.type;
